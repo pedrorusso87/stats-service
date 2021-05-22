@@ -1,5 +1,6 @@
 package com.app.statsservice.controller;
 
+import com.app.statsservice.dto.LoginRequest;
 import com.app.statsservice.dto.RegisterRequest;
 import com.app.statsservice.service.AuthService;
 import org.springframework.http.HttpStatus;
@@ -21,5 +22,10 @@ public class AuthController {
   public ResponseEntity signUp(@RequestBody RegisterRequest registerRequest) {
     authService.signup(registerRequest);
     return new ResponseEntity(HttpStatus.OK);
+  }
+
+  @PostMapping("/login")
+  public String login(@RequestBody LoginRequest loginRequest) {
+    return authService.login(loginRequest);
   }
 }
