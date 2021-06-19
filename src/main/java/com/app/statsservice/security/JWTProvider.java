@@ -1,6 +1,7 @@
 package com.app.statsservice.security;
 
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -28,5 +29,18 @@ public class JWTProvider {
         .setSubject(principal.getUsername())
         .signWith(key)
         .compact();
+  }
+
+  public boolean validateToken(String jwtToken) {
+    Jwts.parser().setSigningKey(key).parseClaimsJws(jwtToken);
+    return true;
+  }
+
+  public String getUsernameFromJWT(String jwtToken) {
+    Claims claims = Jwts.parser().setSigningKey(key)
+        .parseClaimsJws(jwtToken)
+        .getBody();
+
+    return claims.getSubject();
   }
 }
