@@ -44,12 +44,13 @@ public class AuthService {
     return passwordEncoder.encode(password);
   }
 
-  public String login(LoginRequest loginRequest) {
+  public AuthenticationResponse login(LoginRequest loginRequest) {
     Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
         loginRequest.getPassword(),
         loginRequest.getPassword()));
     SecurityContextHolder.getContext().setAuthentication(authenticate);
-    return jwtProvider.generateToken(authenticate);
+    AuthenticationResponse response = new AuthenticationResponse(jwtProvider.generateToken(authenticate), loginRequest.getUsername());
+    return response;
   }
 
   public Optional<org.springframework.security.core.userdetails.User> getCurrentUser() {
