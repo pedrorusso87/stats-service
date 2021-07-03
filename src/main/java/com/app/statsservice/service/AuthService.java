@@ -46,7 +46,7 @@ public class AuthService {
 
   public AuthenticationResponse login(LoginRequest loginRequest) {
     Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-        loginRequest.getPassword(),
+        loginRequest.getUsername(),
         loginRequest.getPassword()));
     SecurityContextHolder.getContext().setAuthentication(authenticate);
     AuthenticationResponse response = new AuthenticationResponse(jwtProvider.generateToken(authenticate), loginRequest.getUsername());
