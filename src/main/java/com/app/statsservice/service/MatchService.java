@@ -19,6 +19,7 @@ public class MatchService {
     this.authService = authService;
     this.matchRepository = matchRepository;
   }
+
   public void createMatch(CreateMatchRequest matchRequest) {
     Match match = new Match();
     match.setDate(matchRequest.getDate());
