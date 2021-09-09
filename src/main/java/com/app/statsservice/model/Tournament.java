@@ -19,4 +19,12 @@ public class Tournament {
 
   @Column
   private String name;
+
+  @Column
+  private boolean finished;
+
+  // Many tournaments are going to have one tournament category
+  @ManyToOne(cascade = CascadeType.MERGE)
+  @JoinColumn(name = "tournament_id")
+  private TournamentCategory tournamentCategory;
 }

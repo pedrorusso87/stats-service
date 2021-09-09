@@ -7,22 +7,16 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name="tournament_categories")
 @Getter
 @Setter
 @NoArgsConstructor
-public class User {
+public class TournamentCategory {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @Column
-  private String userName;
-
-  @Column
-  private String password;
-
-  @Column
-  private String email;
+  private String description;
 }
