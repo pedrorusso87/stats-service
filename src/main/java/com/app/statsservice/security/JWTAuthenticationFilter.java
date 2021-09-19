@@ -1,6 +1,7 @@
 package com.app.statsservice.security;
 
 import com.app.statsservice.service.UserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,13 +20,10 @@ import java.io.IOException;
 * */
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
-  private JWTProvider jwtProvider;
+  @Autowired
+  private JwtProvider jwtProvider;
+  @Autowired
   private UserDetailsServiceImpl userDetailsServiceImpl;
-
-  public JWTAuthenticationFilter(JWTProvider jwtProvider, UserDetailsServiceImpl userDetailsService) {
-      this.jwtProvider =  jwtProvider;
-      this.userDetailsServiceImpl = userDetailsService;
-  }
 
   public JWTAuthenticationFilter() {
 

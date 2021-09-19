@@ -4,7 +4,8 @@ import com.app.statsservice.dto.LoginRequest;
 import com.app.statsservice.dto.RegisterRequest;
 import com.app.statsservice.model.*;
 import com.app.statsservice.repository.UserRepository;
-import com.app.statsservice.security.JWTProvider;
+import com.app.statsservice.security.JwtProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,19 +18,19 @@ import java.util.Optional;
 @Service
 public class AuthService {
 
+  @Autowired
+  private JwtProvider jwtProvider;
+
   private final UserRepository userRepository;
   private PasswordEncoder passwordEncoder;
   private AuthenticationManager authenticationManager;
-  private JWTProvider jwtProvider;
 
   public AuthService(UserRepository userRepository,
                      PasswordEncoder passwordEncoder,
-                     AuthenticationManager authenticationManager,
-                     JWTProvider jwtProvider) {
+                     AuthenticationManager authenticationManager) {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
     this.authenticationManager = authenticationManager;
-    this.jwtProvider = jwtProvider;
   }
 
   public void signup(RegisterRequest registerRequest) {
