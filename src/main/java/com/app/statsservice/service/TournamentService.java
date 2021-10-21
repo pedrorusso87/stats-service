@@ -1,8 +1,8 @@
 package com.app.statsservice.service;
 
 import com.app.statsservice.dto.CreateTournamentRequest;
-import com.app.statsservice.model.Tournament;
-import com.app.statsservice.model.TournamentCategory;
+import com.app.statsservice.model.entities.Tournament;
+import com.app.statsservice.model.entities.TournamentCategory;
 import com.app.statsservice.repository.TournamentRepository;
 import org.springframework.stereotype.Service;
 

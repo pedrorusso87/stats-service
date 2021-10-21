@@ -2,7 +2,7 @@ package com.app.statsservice.service;
 
 import com.app.statsservice.dto.LoginRequest;
 import com.app.statsservice.dto.RegisterRequest;
-import com.app.statsservice.model.*;
+import com.app.statsservice.model.entities.User;
 import com.app.statsservice.repository.UserRepository;
 import com.app.statsservice.security.JwtProvider;
 import com.app.statsservice.service.response.AuthenticationResponse;

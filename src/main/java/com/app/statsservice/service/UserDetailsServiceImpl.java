@@ -1,6 +1,6 @@
 package com.app.statsservice.service;
 
-import com.app.statsservice.model.User;
+import com.app.statsservice.model.entities.User;
 import com.app.statsservice.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

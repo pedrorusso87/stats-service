@@ -1,6 +1,6 @@
 package com.app.statsservice.dto;
 
-import com.app.statsservice.model.TournamentCategory;
+import com.app.statsservice.model.entities.TournamentCategory;
 import lombok.Getter;
 import lombok.Setter;
 

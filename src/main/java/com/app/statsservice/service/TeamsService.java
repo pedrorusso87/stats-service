@@ -1,6 +1,6 @@
 package com.app.statsservice.service;
 
-import com.app.statsservice.model.Team;
+import com.app.statsservice.model.entities.Team;
 import com.app.statsservice.model.response.TeamOwner;
 import com.app.statsservice.repository.TeamsRepository;
 import com.app.statsservice.service.response.TeamsResponse;
@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service

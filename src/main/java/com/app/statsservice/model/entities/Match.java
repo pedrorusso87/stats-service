@@ -1,4 +1,4 @@
-package com.app.statsservice.model;
+package com.app.statsservice.model.entities;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

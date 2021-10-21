@@ -1,7 +1,7 @@
 package com.app.statsservice.controller;
 
 import com.app.statsservice.dto.CreateMatchRequest;
-import com.app.statsservice.model.Match;
+import com.app.statsservice.model.entities.Match;
 import com.app.statsservice.service.MatchService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

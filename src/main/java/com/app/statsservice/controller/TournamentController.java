@@ -1,7 +1,7 @@
 package com.app.statsservice.controller;
 
 import com.app.statsservice.dto.CreateTournamentRequest;
-import com.app.statsservice.model.Tournament;
+import com.app.statsservice.model.entities.Tournament;
 import com.app.statsservice.service.TournamentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

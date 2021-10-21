@@ -2,7 +2,7 @@ package com.app.statsservice.service;
 
 import com.app.statsservice.dto.CreateMatchRequest;
 import com.app.statsservice.exception.MatchNotFoundException;
-import com.app.statsservice.model.Match;
+import com.app.statsservice.model.entities.Match;
 import com.app.statsservice.repository.MatchRepository;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;

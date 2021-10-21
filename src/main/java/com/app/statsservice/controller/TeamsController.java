@@ -1,6 +1,5 @@
 package com.app.statsservice.controller;
 
-import com.app.statsservice.model.Team;
 import com.app.statsservice.service.TeamsService;
 import com.app.statsservice.service.response.TeamsResponse;
 import org.springframework.http.HttpStatus;
