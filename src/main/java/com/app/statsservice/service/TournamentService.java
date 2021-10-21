@@ -28,11 +28,6 @@ public class TournamentService {
     tournamentRepository.save(tournament);
   }
 
-  public List<Tournament> getTournaments() {
-    return tournamentRepository.findAll();
-    //return tournaments;
-  }
-
   public List<Tournament> getAllTournaments() {
     return tournamentRepository.findAll();
   }

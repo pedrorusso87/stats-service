@@ -18,11 +18,14 @@ public class User {
   private Long id;
 
   @Column
-  private String userName;
+  private String username;
 
   @Column
   private String password;
 
   @Column
   private String email;
+
+  @OneToOne(mappedBy = "user")
+  private Team team;
 }

@@ -1,4 +1,4 @@
-package com.app.statsservice.service;
+package com.app.statsservice.service.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -5,6 +5,7 @@ import com.app.statsservice.dto.RegisterRequest;
 import com.app.statsservice.model.*;
 import com.app.statsservice.repository.UserRepository;
 import com.app.statsservice.security.JwtProvider;
+import com.app.statsservice.service.response.AuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,7 +36,7 @@ public class AuthService {
 
   public void signup(RegisterRequest registerRequest) {
     User user = new User();
-    user.setUserName(registerRequest.getUsername());
+    user.setUsername(registerRequest.getUsername());
     user.setEmail(registerRequest.getEmail());
     user.setPassword(encodePassword(registerRequest.getPassword()));
     userRepository.save(user);

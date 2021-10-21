@@ -3,7 +3,7 @@ package com.app.statsservice.controller;
 import com.app.statsservice.dto.LoginRequest;
 import com.app.statsservice.dto.RegisterRequest;
 import com.app.statsservice.service.AuthService;
-import com.app.statsservice.service.AuthenticationResponse;
+import com.app.statsservice.service.response.AuthenticationResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
