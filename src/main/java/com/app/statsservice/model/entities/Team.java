@@ -20,6 +20,10 @@ public class Team {
   @Column
   private String name;
 
+  // This field will be used to reflect if the team is 'ACTIVE' or 'DELETED'
+  @Column
+  private String status;
+
   // user id of the team owner
   @OneToOne (cascade = CascadeType.ALL)
   @JoinColumn(name = "user_id", referencedColumnName = "id")
