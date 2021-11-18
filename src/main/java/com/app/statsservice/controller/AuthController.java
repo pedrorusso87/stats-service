@@ -2,6 +2,8 @@ package com.app.statsservice.controller;
 
 import com.app.statsservice.dto.LoginRequest;
 import com.app.statsservice.dto.RegisterRequest;
+import com.app.statsservice.model.entities.User;
+import com.app.statsservice.model.response.RegistrationResponse;
 import com.app.statsservice.service.AuthService;
 import com.app.statsservice.service.response.AuthenticationResponse;
 import org.springframework.http.HttpStatus;
@@ -21,13 +23,17 @@ public class AuthController {
 
   @PostMapping("/signup")
   public ResponseEntity signUp(@RequestBody RegisterRequest registerRequest) {
-    authService.signup(registerRequest);
-    return new ResponseEntity(HttpStatus.OK);
+    User newUser = authService.signup(registerRequest);
+    return new ResponseEntity(getRegisteredUsername(newUser), HttpStatus.OK);
   }
 
   @PostMapping("/login")
   public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest) {
     AuthenticationResponse response = this.authService.login(loginRequest);
     return new ResponseEntity<>(response, response.getHttpStatus());
+  }
+
+  private RegistrationResponse getRegisteredUsername(User user) {
+    return new RegistrationResponse(user.getUsername());
   }
 }

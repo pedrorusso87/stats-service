@@ -36,12 +36,12 @@ public class AuthService {
     this.authenticationManager = authenticationManager;
   }
 
-  public void signup(RegisterRequest registerRequest) {
+  public User signup(RegisterRequest registerRequest) {
     User user = new User();
     user.setUsername(registerRequest.getUsername());
     user.setEmail(registerRequest.getEmail());
     user.setPassword(encodePassword(registerRequest.getPassword()));
-    userRepository.save(user);
+    return userRepository.save(user);
   }
 
   private String encodePassword(String password) {
