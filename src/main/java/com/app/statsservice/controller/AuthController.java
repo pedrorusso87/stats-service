@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.*;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -22,18 +24,15 @@ public class AuthController {
   public AuthController(AuthService authService ) { this.authService = authService; }
 
   @PostMapping("/signup")
-  public ResponseEntity signUp(@RequestBody RegisterRequest registerRequest) {
+  public ResponseEntity signUp(@Valid @RequestBody RegisterRequest registerRequest) {
     User newUser = authService.signup(registerRequest);
-    return new ResponseEntity(getRegisteredUsername(newUser), HttpStatus.OK);
+    RegistrationResponse response = new RegistrationResponse(newUser.getUsername());
+    return new ResponseEntity(response, HttpStatus.OK);
   }
 
   @PostMapping("/login")
   public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest) {
     AuthenticationResponse response = this.authService.login(loginRequest);
     return new ResponseEntity<>(response, response.getHttpStatus());
-  }
-
-  private RegistrationResponse getRegisteredUsername(User user) {
-    return new RegistrationResponse(user.getUsername());
   }
 }

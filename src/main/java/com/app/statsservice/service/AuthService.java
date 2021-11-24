@@ -2,6 +2,8 @@ package com.app.statsservice.service;
 
 import com.app.statsservice.dto.LoginRequest;
 import com.app.statsservice.dto.RegisterRequest;
+import com.app.statsservice.exception.EmailAlreadyExistsException;
+import com.app.statsservice.exception.UsernameAlreadyExistsException;
 import com.app.statsservice.model.entities.User;
 import com.app.statsservice.repository.UserRepository;
 import com.app.statsservice.security.JwtProvider;
@@ -9,7 +11,6 @@ import com.app.statsservice.service.response.AuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,6 +42,7 @@ public class AuthService {
     user.setUsername(registerRequest.getUsername());
     user.setEmail(registerRequest.getEmail());
     user.setPassword(encodePassword(registerRequest.getPassword()));
+    userAlreadyExists(user);
     return userRepository.save(user);
   }
 
@@ -49,17 +51,13 @@ public class AuthService {
   }
 
   public AuthenticationResponse login(LoginRequest loginRequest) {
-    try{
-      Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-          loginRequest.getUsername(),
-          loginRequest.getPassword()));
-      SecurityContextHolder.getContext().setAuthentication(authenticate);
-      AuthenticationResponse response = new AuthenticationResponse(jwtProvider.generateToken(authenticate), loginRequest.getUsername(),
-          "Success", HttpStatus.OK);
-      return response;
-    } catch (BadCredentialsException e) {
-      return buildAuthtenticationResponse();
-    }
+    Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+        loginRequest.getUsername(),
+        loginRequest.getPassword()));
+    SecurityContextHolder.getContext().setAuthentication(authenticate);
+    AuthenticationResponse response = new AuthenticationResponse(jwtProvider.generateToken(authenticate), loginRequest.getUsername(),
+        "Success", HttpStatus.OK);
+    return response;
   }
 
   public Optional<org.springframework.security.core.userdetails.User> getCurrentUser() {
@@ -68,10 +66,13 @@ public class AuthService {
     return Optional.of(principal);
   }
 
-  private AuthenticationResponse buildAuthtenticationResponse() {
-    AuthenticationResponse response = new AuthenticationResponse();
-    response.setMessage("Bad Credentials");
-    response.setHttpStatus(HttpStatus.BAD_REQUEST);
-    return response;
+  private void userAlreadyExists(User user) {
+     if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+      throw new EmailAlreadyExistsException("La direccion de correo electrónico ya existe");
+    } else {
+      if(userRepository.findByUsername(user.getUsername()).isPresent());
+       throw new UsernameAlreadyExistsException("El nombre de usuario ya existe");
+    }
   }
+
 }
