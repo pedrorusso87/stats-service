@@ -70,8 +70,9 @@ public class AuthService {
      if (userRepository.findByEmail(user.getEmail()).isPresent()) {
       throw new EmailAlreadyExistsException("La direccion de correo electrónico ya existe");
     } else {
-      if(userRepository.findByUsername(user.getUsername()).isPresent());
-       throw new UsernameAlreadyExistsException("El nombre de usuario ya existe");
+      if(userRepository.findByUsername(user.getUsername()).isPresent()){
+        throw new UsernameAlreadyExistsException("El nombre de usuario ya existe");
+      }
     }
   }
 
