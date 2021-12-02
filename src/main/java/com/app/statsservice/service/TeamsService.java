@@ -1,6 +1,8 @@
 package com.app.statsservice.service;
 
+import com.app.statsservice.dto.AddTeamRequest;
 import com.app.statsservice.model.entities.Team;
+import com.app.statsservice.model.entities.User;
 import com.app.statsservice.model.response.TeamOwner;
 import com.app.statsservice.repository.TeamsRepository;
 import com.app.statsservice.service.response.TeamsResponse;
@@ -28,6 +30,20 @@ public class TeamsService {
     return teamsResponse;
   }
 
+  public Team saveTeam(AddTeamRequest request) {
+    Team team = new Team();
+    team.setName(request.getTeamName());
+    team.setDateCreated(request.getDateCreated());
+    team.setFoundationDate(request.getFoundationDate());
+    team.setStatus("ACTIVE");
+    if (request.getTeamOwner() != null) {
+      team.setUser(getOwnerData(request.getTeamOwner()));
+    } else {
+      team.setUser(null);
+    }
+    return teamsRepository.save(team);
+  }
+
   private TeamsResponse addTeam(Team team) {
     TeamsResponse response = new TeamsResponse();
     response.setTeamId(team.getId());
@@ -38,5 +54,10 @@ public class TeamsService {
     teamOwner.setName(team.getUser().getUsername());
     response.setTeamOwner(teamOwner);
     return response;
+  }
+
+  private User getOwnerData(User requestUser) {
+    User user = new User(requestUser.getId(), requestUser.getUsername());
+    return user;
   }
 }

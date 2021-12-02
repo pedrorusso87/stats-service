@@ -28,4 +28,9 @@ public class User {
 
   @OneToOne(mappedBy = "user")
   private Team team;
+
+  public User(Long id, String username) {
+    this.id = id;
+    this.username = username;
+  }
 }

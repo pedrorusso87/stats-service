@@ -34,7 +34,7 @@ public class Team {
   private Date foundationDate;
 
   // user id of the team owner
-  @OneToOne (cascade = CascadeType.ALL)
+  @OneToOne (cascade = CascadeType.MERGE)
   @JoinColumn(name = "user_id", referencedColumnName = "id")
   private User user;
 }

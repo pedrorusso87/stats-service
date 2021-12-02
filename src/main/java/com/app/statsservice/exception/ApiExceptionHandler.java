@@ -74,7 +74,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(BadCredentialsException.class)
   protected ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex) {
     ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
-    apiError.setMessage(ex.getMessage());
+    apiError.setMessage(ex.getLocalizedMessage());
     return buildResponseEntity(apiError);
   }
 

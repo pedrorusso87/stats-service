@@ -1,13 +1,14 @@
 package com.app.statsservice.controller;
 
+import com.app.statsservice.dto.AddTeamRequest;
+import com.app.statsservice.model.entities.Team;
 import com.app.statsservice.service.TeamsService;
 import com.app.statsservice.service.response.TeamsResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,5 +24,11 @@ public class TeamsController {
   @GetMapping("/all")
   public ResponseEntity<List<TeamsResponse>> getAllMatches() {
     return new ResponseEntity<>(teamsService.getTeams(), HttpStatus.OK);
+  }
+
+  @PostMapping("/add")
+  public ResponseEntity<Team> addTeam(@Valid @RequestBody AddTeamRequest addTeamRequest) {
+    Team newTeam = teamsService.saveTeam(addTeamRequest);
+    return new ResponseEntity<>(newTeam, HttpStatus.OK);
   }
 }
