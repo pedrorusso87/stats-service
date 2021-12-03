@@ -33,8 +33,8 @@ public class Team {
   @Column
   private Date foundationDate;
 
-  // user id of the team owner
-  @OneToOne (cascade = CascadeType.MERGE)
-  @JoinColumn(name = "user_id", referencedColumnName = "id")
+  // The team owner
+  @ManyToOne()
+  @JoinColumn(name="user_id")
   private User user;
 }

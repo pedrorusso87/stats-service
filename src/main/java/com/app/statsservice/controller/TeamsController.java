@@ -4,6 +4,7 @@ import com.app.statsservice.dto.AddTeamRequest;
 import com.app.statsservice.model.entities.Team;
 import com.app.statsservice.service.TeamsService;
 import com.app.statsservice.service.response.TeamsResponse;
+import com.app.statsservice.service.response.UserTeamsResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +23,13 @@ public class TeamsController {
   }
 
   @GetMapping("/all")
-  public ResponseEntity<List<TeamsResponse>> getAllMatches() {
+  public ResponseEntity<List<TeamsResponse>> getAllTeams() {
     return new ResponseEntity<>(teamsService.getTeams(), HttpStatus.OK);
+  }
+
+  @GetMapping("/{userId}")
+  public ResponseEntity<UserTeamsResponse> getTeamsByUser(@PathVariable Long userId) {
+    return new ResponseEntity<>(teamsService.getTeamsByUserId(userId), HttpStatus.OK);
   }
 
   @PostMapping("/add")

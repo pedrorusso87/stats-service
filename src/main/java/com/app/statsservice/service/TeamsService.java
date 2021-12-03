@@ -6,11 +6,15 @@ import com.app.statsservice.model.entities.User;
 import com.app.statsservice.model.response.TeamOwner;
 import com.app.statsservice.repository.TeamsRepository;
 import com.app.statsservice.service.response.TeamsResponse;
+import com.app.statsservice.service.response.UserTeamsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 @Service
 public class TeamsService {
@@ -59,5 +63,20 @@ public class TeamsService {
   private User getOwnerData(User requestUser) {
     User user = new User(requestUser.getId(), requestUser.getUsername());
     return user;
+  }
+
+  public UserTeamsResponse getTeamsByUserId(Long userId) {
+    List<Team> userTeams = new ArrayList<>();
+    UserTeamsResponse response = new UserTeamsResponse();
+
+    // TODO: should this field even exist? If so, could it be username instead of userId?
+    response.setUserId(userId);
+
+    Optional<List<Team>> teamsList = teamsRepository.findTeamsByUserId(userId);
+    if(!teamsList.isEmpty()) {
+      userTeams = teamsList.get();
+    }
+    response.setTeamsList(userTeams);
+    return response;
   }
 }
