@@ -1,5 +1,6 @@
 package com.app.statsservice.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,14 +28,17 @@ public class Team {
 
   //The date the record was added to the database
   @Column
+  @Temporal(TemporalType.DATE)
   private Date dateCreated;
 
   //The date the team was founded
   @Column
+  @Temporal(TemporalType.DATE)
   private Date foundationDate;
 
   // The team owner
   @ManyToOne()
   @JoinColumn(name="user_id")
+  @JsonIgnore
   private User user;
 }

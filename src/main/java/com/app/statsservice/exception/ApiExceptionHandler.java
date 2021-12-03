@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
@@ -99,6 +100,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
    */
   @ExceptionHandler(UsernameAlreadyExistsException.class)
   protected ResponseEntity<Object> handleUsernameAlreadyExistsException(UsernameAlreadyExistsException ex) {
+    ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+    apiError.setMessage(ex.getMessage());
+    return buildResponseEntity(apiError);
+  }
+
+  /**
+   * Handler for no username or element on db
+   *
+   * @param ex the NoSuchElement
+   * @return the ApiError object
+   */
+  @ExceptionHandler(NoSuchElementException.class)
+  protected ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException ex) {
     ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
     apiError.setMessage(ex.getMessage());
     return buildResponseEntity(apiError);

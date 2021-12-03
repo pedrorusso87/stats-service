@@ -27,9 +27,9 @@ public class TeamsController {
     return new ResponseEntity<>(teamsService.getTeams(), HttpStatus.OK);
   }
 
-  @GetMapping("/{userId}")
-  public ResponseEntity<UserTeamsResponse> getTeamsByUser(@PathVariable Long userId) {
-    return new ResponseEntity<>(teamsService.getTeamsByUserId(userId), HttpStatus.OK);
+  @GetMapping("/{username}")
+  public ResponseEntity<UserTeamsResponse> getTeamsByUser(@PathVariable String username) {
+    return new ResponseEntity<>(teamsService.getTeamsByUserId(username), HttpStatus.OK);
   }
 
   @PostMapping("/add")

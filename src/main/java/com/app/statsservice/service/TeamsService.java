@@ -4,12 +4,15 @@ import com.app.statsservice.dto.AddTeamRequest;
 import com.app.statsservice.model.entities.Team;
 import com.app.statsservice.model.entities.User;
 import com.app.statsservice.model.response.TeamOwner;
+import com.app.statsservice.model.response.UserTeam;
 import com.app.statsservice.repository.TeamsRepository;
 import com.app.statsservice.service.response.TeamsResponse;
 import com.app.statsservice.service.response.UserTeamsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,8 +25,14 @@ public class TeamsService {
   @Autowired
   private TeamsRepository teamsRepository;
 
-  public TeamsService(TeamsRepository teamsRepository) {
+  @Autowired
+  private AuthService authService;
+
+  private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+  public TeamsService(TeamsRepository teamsRepository, AuthService authService) {
     this.teamsRepository = teamsRepository;
+    this.authService = authService;
   }
   
   public List<TeamsResponse> getTeams() {
@@ -65,18 +74,33 @@ public class TeamsService {
     return user;
   }
 
-  public UserTeamsResponse getTeamsByUserId(Long userId) {
-    List<Team> userTeams = new ArrayList<>();
+  public UserTeamsResponse getTeamsByUserId(String username) {
+    List<Team> teams = new ArrayList<>();
+    List<UserTeam> userTeams = new ArrayList<>();
     UserTeamsResponse response = new UserTeamsResponse();
+    // TODO: should this field even exist?
+    response.setUsername(username);
 
-    // TODO: should this field even exist? If so, could it be username instead of userId?
-    response.setUserId(userId);
-
-    Optional<List<Team>> teamsList = teamsRepository.findTeamsByUserId(userId);
-    if(!teamsList.isEmpty()) {
-      userTeams = teamsList.get();
+    Long userId = authService.findUserIdByUsername(username);
+    if (userId != null) {
+      Optional<List<Team>> teamsList = teamsRepository.findTeamsByUserId(userId);
+      if(!teamsList.isEmpty()) {
+        teams = teamsList.get();
+      }
+    }
+    for (Team team: teams) {
+      userTeams.add(buildUserTeam(team));
     }
     response.setTeamsList(userTeams);
     return response;
+  }
+
+  private UserTeam buildUserTeam(Team team) {
+    UserTeam userTeam = new UserTeam();
+    userTeam.setId(team.getId());
+    userTeam.setName(team.getName());
+    userTeam.setDateCreated(dateFormat.format(team.getDateCreated()));
+    userTeam.setFoundationDate(dateFormat.format(team.getDateCreated()));
+    return userTeam;
   }
 }
