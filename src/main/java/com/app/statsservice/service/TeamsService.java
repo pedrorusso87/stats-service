@@ -99,6 +99,7 @@ public class TeamsService {
     UserTeam userTeam = new UserTeam();
     userTeam.setId(team.getId());
     userTeam.setName(team.getName());
+    userTeam.setStatus(team.getStatus());
     userTeam.setDateCreated(dateFormat.format(team.getDateCreated()));
     userTeam.setFoundationDate(dateFormat.format(team.getDateCreated()));
     return userTeam;
