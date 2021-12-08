@@ -21,12 +21,8 @@ public class MatchService {
   }
 
   public void createMatch(CreateMatchRequest matchRequest) {
-    Match match = new Match();
-    match.setDate(matchRequest.getDate());
-    match.setResult(matchRequest.getResult());
-    User username = authService.getCurrentUser().orElseThrow(() -> new IllegalArgumentException("No user logged in"));
-    match.setUserName(username.getUsername());
-    matchRepository.save(match);
+
+    matchRepository.save(buildMatch(matchRequest));
   }
 
   public List<Match> getAllMatches() {
@@ -47,4 +43,10 @@ public class MatchService {
   /* private Object mapFromMatchtoObject(Match match) {
 
   }*/
+
+  private Match buildMatch(CreateMatchRequest request) {
+    Match match = new Match(request.getVenue(),request.getDate(),
+        request.getWinnerTeam(), request.getLoserTeam(), request.getResult());
+    return match;
+  }
 }
