@@ -2,6 +2,7 @@ package com.app.statsservice.controller;
 
 import com.app.statsservice.dto.AddTeamRequest;
 import com.app.statsservice.model.entities.Team;
+import com.app.statsservice.model.response.UserTeam;
 import com.app.statsservice.service.TeamsService;
 import com.app.statsservice.service.response.TeamsResponse;
 import com.app.statsservice.service.response.UserTeamsResponse;
@@ -33,8 +34,8 @@ public class TeamsController {
   }
 
   @PostMapping("/add")
-  public ResponseEntity<Team> addTeam(@Valid @RequestBody AddTeamRequest addTeamRequest) {
-    Team newTeam = teamsService.saveTeam(addTeamRequest);
+  public ResponseEntity<UserTeam> addTeam(@Valid @RequestBody AddTeamRequest addTeamRequest) {
+    UserTeam newTeam = teamsService.saveTeam(addTeamRequest);
     return new ResponseEntity<>(newTeam, HttpStatus.OK);
   }
 }

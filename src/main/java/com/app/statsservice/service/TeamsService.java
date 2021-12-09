@@ -43,7 +43,7 @@ public class TeamsService {
     return teamsResponse;
   }
 
-  public Team saveTeam(AddTeamRequest request) {
+  public UserTeam saveTeam(AddTeamRequest request) {
     Team team = new Team();
     team.setName(request.getTeamName());
     team.setDateCreated(request.getDateCreated());
@@ -54,7 +54,9 @@ public class TeamsService {
     } else {
       team.setUser(null);
     }
-    return teamsRepository.save(team);
+    Team savedTeam = teamsRepository.save(team);
+    UserTeam userTeam = buildUserTeam(savedTeam);
+    return userTeam;
   }
 
   private TeamsResponse addTeam(Team team) {
