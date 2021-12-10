@@ -30,6 +30,14 @@ public class User {
   @Column
   private String email;
 
+  @OneToMany(
+      mappedBy = "user",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true
+  )
+  private List<Team> userTeams = new ArrayList<>();
+
+
   public User(Long id, String username) {
     this.id = id;
     this.username = username;

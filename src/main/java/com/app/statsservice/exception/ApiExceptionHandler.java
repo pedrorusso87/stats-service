@@ -118,6 +118,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     return buildResponseEntity(apiError);
   }
 
+  /**
+   * Handler team name already exists
+   *
+   * @param ex the NoSuchElement
+   * @return the ApiError object
+   */
+  @ExceptionHandler(TeamNameAlreadyExistsException.class)
+  protected ResponseEntity<Object> handleTeamNameAlreadyExistsException(TeamNameAlreadyExistsException ex) {
+    ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+    apiError.setMessage(ex.getMessage());
+    return buildResponseEntity(apiError);
+  }
+
   private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
     return new ResponseEntity<>(apiError, apiError.getStatus());
   }

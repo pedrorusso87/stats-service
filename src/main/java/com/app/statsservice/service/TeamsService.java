@@ -1,6 +1,7 @@
 package com.app.statsservice.service;
 
 import com.app.statsservice.dto.AddTeamRequest;
+import com.app.statsservice.exception.TeamNameAlreadyExistsException;
 import com.app.statsservice.model.entities.Team;
 import com.app.statsservice.model.entities.User;
 import com.app.statsservice.model.response.TeamOwner;
@@ -50,7 +51,11 @@ public class TeamsService {
     team.setFoundationDate(request.getFoundationDate());
     team.setStatus("ACTIVE");
     if (request.getTeamOwner() != null) {
-      team.setUser(getOwnerData(request.getTeamOwner()));
+      if(this.teamsRepository.findTeamByNameAndUserId(request.getTeamName(), request.getTeamOwner().getId()).isPresent()) {
+        throw new TeamNameAlreadyExistsException("El nombre de equipo ya existe");
+      } else {
+        team.setUser(request.getTeamOwner());
+      }
     } else {
       team.setUser(null);
     }
@@ -104,6 +109,13 @@ public class TeamsService {
     userTeam.setStatus(team.getStatus());
     userTeam.setDateCreated(dateFormat.format(team.getDateCreated()));
     userTeam.setFoundationDate(dateFormat.format(team.getDateCreated()));
+    if (team.getUser() != null) {
+      TeamOwner owner = new TeamOwner();
+      owner.setEmail(team.getUser().getEmail());
+      owner.setId(team.getUser().getId());
+      owner.setName(team.getUser().getUsername());
+      userTeam.setTeamOwner(owner);
+    }
     return userTeam;
   }
 }
