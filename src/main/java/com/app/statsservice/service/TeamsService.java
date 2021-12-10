@@ -15,21 +15,19 @@ import org.springframework.stereotype.Service;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 @Service
 public class TeamsService {
 
   @Autowired
-  private TeamsRepository teamsRepository;
+  private final TeamsRepository teamsRepository;
 
   @Autowired
-  private AuthService authService;
+  private final AuthService authService;
 
-  private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+  private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
   public TeamsService(TeamsRepository teamsRepository, AuthService authService) {
     this.teamsRepository = teamsRepository;
@@ -60,8 +58,7 @@ public class TeamsService {
       team.setUser(null);
     }
     Team savedTeam = teamsRepository.save(team);
-    UserTeam userTeam = buildUserTeam(savedTeam);
-    return userTeam;
+    return buildUserTeam(savedTeam);
   }
 
   private TeamsResponse addTeam(Team team) {
