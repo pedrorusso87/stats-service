@@ -59,6 +59,7 @@ public class TeamsService {
         throw new TeamNameAlreadyExistsException("El nombre de equipo ya existe");
       } else {
         request.getTeamOwner().setId(user.getId());
+        request.getTeamOwner().setEmail(user.getEmail());
         team.setUser(request.getTeamOwner());
       }
     } else {
