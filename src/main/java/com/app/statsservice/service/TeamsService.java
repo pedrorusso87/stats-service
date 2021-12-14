@@ -73,11 +73,7 @@ public class TeamsService {
     TeamsResponse response = new TeamsResponse();
     response.setTeamId(team.getId());
     response.setTeamName(team.getName());
-    TeamOwner teamOwner = new TeamOwner();
-    teamOwner.setEmail(team.getUser().getEmail());
-    teamOwner.setId(team.getUser().getId());
-    teamOwner.setName(team.getUser().getUsername());
-    response.setTeamOwner(teamOwner);
+    response.setTeamOwner(buildTeamOwner(team));
     return response;
   }
 
@@ -89,9 +85,9 @@ public class TeamsService {
   public UserTeamsResponse getTeamsByUserId(String username) {
     List<Team> teams = new ArrayList<>();
     List<UserTeam> userTeams = new ArrayList<>();
-    UserTeamsResponse response = new UserTeamsResponse();
+    UserTeamsResponse userTeamsResponse = new UserTeamsResponse();
     // TODO: should this field even exist?
-    response.setUsername(username);
+    //userTeamsResponse.setUsername(username);
 
     Long userId = authService.findUserIdByUsername(username);
     if (userId != null) {
@@ -103,8 +99,9 @@ public class TeamsService {
     for (Team team: teams) {
       userTeams.add(buildUserTeam(team));
     }
-    response.setTeamsList(userTeams);
-    return response;
+    userTeamsResponse.setTeamOwner(buildTeamOwner(teams.get(0)));
+    userTeamsResponse.setTeamsList(userTeams);
+    return userTeamsResponse;
   }
 
   private UserTeam buildUserTeam(Team team) {
@@ -114,13 +111,14 @@ public class TeamsService {
     userTeam.setStatus(team.getStatus());
     userTeam.setDateCreated(dateFormat.format(team.getDateCreated()));
     userTeam.setFoundationDate(dateFormat.format(team.getDateCreated()));
-    if (team.getUser() != null) {
-      TeamOwner owner = new TeamOwner();
-      owner.setEmail(team.getUser().getEmail());
-      owner.setId(team.getUser().getId());
-      owner.setName(team.getUser().getUsername());
-      userTeam.setTeamOwner(owner);
-    }
     return userTeam;
+  }
+
+  private TeamOwner buildTeamOwner(Team team) {
+    TeamOwner teamOwner = new TeamOwner();
+    teamOwner.setEmail(team.getUser().getEmail());
+    teamOwner.setId(team.getUser().getId());
+    teamOwner.setUsername(team.getUser().getUsername());
+    return teamOwner;
   }
 }

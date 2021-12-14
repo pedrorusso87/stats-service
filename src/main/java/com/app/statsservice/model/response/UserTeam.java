@@ -1,6 +1,5 @@
 package com.app.statsservice.model.response;
 
-import com.app.statsservice.model.entities.Team;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,5 +11,4 @@ public class UserTeam {
   private String status;
   private String foundationDate;
   private String dateCreated;
-  private TeamOwner teamOwner;
 }
