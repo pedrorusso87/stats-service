@@ -31,7 +31,7 @@ public class TeamsService {
   @Autowired
   private final AuthService authService;
 
-  private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+  private final DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
   public TeamsService(TeamsRepository teamsRepository, AuthService authService, UserRepository userRepository) {
     this.teamsRepository = teamsRepository;
