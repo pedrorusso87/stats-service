@@ -12,6 +12,8 @@ import java.util.Map;
 @Setter
 public class ApiError {
 
+  //TODO: Add status code to this response?
+
   private HttpStatus status;
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
   private LocalDateTime timestamp;
