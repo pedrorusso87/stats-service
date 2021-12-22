@@ -11,4 +11,5 @@ public class UserTeam {
   private String status;
   private String foundationDate;
   private String dateCreated;
+  private String role;
 }

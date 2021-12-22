@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class TeamsService {
@@ -43,11 +41,14 @@ public class TeamsService {
 
     List<Team> teams = teamsRepository.findAll();
     List<TeamsResponse> teamsResponse = new ArrayList<>();
-    teamsResponse.add(this.addTeam(teams.get(0)));
+    for (Team team: teams) {
+      teamsResponse.add(this.addTeam(team));
+    }
     return teamsResponse;
   }
 
   public UserTeam saveTeam(AddTeamRequest request) {
+    //TODO: Create subscription record after creating the team!
     Team team = new Team();
     team.setName(request.getTeamName());
     team.setDateCreated(request.getDateCreated());
@@ -77,34 +78,41 @@ public class TeamsService {
     return response;
   }
 
-  private User getOwnerData(User requestUser) {
-    User user = new User(requestUser.getId(), requestUser.getUsername());
-    return user;
-  }
-
   public UserTeamsResponse getTeamsByUserId(String username) {
-    List<Team> teams = new ArrayList<>();
+    List<Long> teamIds = new ArrayList<>();
     List<UserTeam> userTeams = new ArrayList<>();
     UserTeamsResponse userTeamsResponse = new UserTeamsResponse();
-    // TODO: should this field even exist?
-    //userTeamsResponse.setUsername(username);
 
     Long userId = authService.findUserIdByUsername(username);
     if (userId != null) {
-      Optional<List<Team>> teamsList = teamsRepository.findTeamsByUserId(userId);
-      if(!teamsList.isEmpty()) {
-        teams = teamsList.get();
+      Optional<List<Object[]>> userSubscriptions = teamsRepository.findTeamsSubscriptions(userId);
+      Map<String, String> userTeamRoles = new HashMap<>();
+      if(userSubscriptions.isPresent()) {
+        for(Object[] subs: userSubscriptions.get()) {
+          userTeamRoles.put(subs[0].toString(), subs[1].toString());
+          teamIds.add((Long) subs[0]);
+        }
       }
+      Optional<List<Team>> teamsList = teamsRepository.findTeamByIdIn(teamIds);
+      if(teamsList.isPresent()) {
+        for(Team team : teamsList.get()) {
+          userTeams.add(buildUserTeam(team));
+        }
+      }
+      for(UserTeam userTeam: userTeams) {
+        userTeam.setRole(userTeamRoles.get(userTeam.getId().toString()));
+      }
+
     }
-    for (Team team: teams) {
-      userTeams.add(buildUserTeam(team));
-    }
-    userTeamsResponse.setTeamOwner(buildTeamOwner(teams.get(0)));
+
     userTeamsResponse.setTeamsList(userTeams);
     return userTeamsResponse;
   }
 
   private UserTeam buildUserTeam(Team team) {
+    /* TODO:
+    * Need to find a way to set the user permission for each team
+    */
     UserTeam userTeam = new UserTeam();
     userTeam.setId(team.getId());
     userTeam.setName(team.getName());
