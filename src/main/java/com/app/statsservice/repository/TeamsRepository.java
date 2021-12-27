@@ -16,5 +16,5 @@ public interface TeamsRepository extends JpaRepository<Team, Long> {
   @Query("select ts.teamId, roles.roleName from TeamSubscription ts " +
       "join UserRole roles on ts.roleId = roles.id where\n" +
       "user_id = ?1")
-  Optional<List<Object[]>> findTeamsSubscriptions(Long usedId);
+  Optional<List<Object[]>> findTeamsSubscriptions(Long userId);
 }

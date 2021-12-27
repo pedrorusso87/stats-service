@@ -3,9 +3,12 @@ package com.app.statsservice.service;
 import com.app.statsservice.dto.AddTeamRequest;
 import com.app.statsservice.exception.TeamNameAlreadyExistsException;
 import com.app.statsservice.model.entities.Team;
+import com.app.statsservice.model.entities.TeamSubscription;
 import com.app.statsservice.model.entities.User;
 import com.app.statsservice.model.response.TeamOwner;
 import com.app.statsservice.model.response.UserTeam;
+import com.app.statsservice.repository.RolesRepository;
+import com.app.statsservice.repository.SubscriptionsRepository;
 import com.app.statsservice.repository.TeamsRepository;
 import com.app.statsservice.repository.UserRepository;
 import com.app.statsservice.service.response.TeamsResponse;
@@ -29,12 +32,22 @@ public class TeamsService {
   @Autowired
   private final AuthService authService;
 
+  @Autowired
+  private final SubscriptionsRepository subscriptionsRepository;
+
+  @Autowired
+  private final RolesRepository rolesRepository;
+
   private final DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-  public TeamsService(TeamsRepository teamsRepository, AuthService authService, UserRepository userRepository) {
+  public TeamsService(TeamsRepository teamsRepository, AuthService authService,
+                      UserRepository userRepository, RolesRepository rolesRepository,
+                      SubscriptionsRepository subscriptionsRepository) {
     this.teamsRepository = teamsRepository;
     this.authService = authService;
     this.userRepository = userRepository;
+    this.rolesRepository = rolesRepository;
+    this.subscriptionsRepository = subscriptionsRepository;
   }
   
   public List<TeamsResponse> getTeams() {
@@ -67,7 +80,17 @@ public class TeamsService {
       team.setUser(null);
     }
     Team savedTeam = teamsRepository.save(team);
+    this.createSubscription(team.getUser().getId(), savedTeam.getId());
     return buildUserTeam(savedTeam);
+  }
+
+  //TODO: Consider moving this to another controller since this might not fall within this class responsibility
+  private void createSubscription(Long userId, Long teamId) {
+    Optional<Long> ownerId = this.rolesRepository.findTeamOwnerRoleId();
+    if(ownerId.isPresent()) {
+      TeamSubscription subscription = new TeamSubscription(userId, teamId, ownerId.get());
+      subscriptionsRepository.save(subscription);
+    }
   }
 
   private TeamsResponse addTeam(Team team) {
@@ -79,6 +102,7 @@ public class TeamsService {
   }
 
   public UserTeamsResponse getTeamsByUserId(String username) {
+    //TODO add null checks, and error handling
     List<Long> teamIds = new ArrayList<>();
     List<UserTeam> userTeams = new ArrayList<>();
     UserTeamsResponse userTeamsResponse = new UserTeamsResponse();
@@ -102,7 +126,6 @@ public class TeamsService {
       for(UserTeam userTeam: userTeams) {
         userTeam.setRole(userTeamRoles.get(userTeam.getId().toString()));
       }
-
     }
 
     userTeamsResponse.setTeamsList(userTeams);
@@ -110,9 +133,6 @@ public class TeamsService {
   }
 
   private UserTeam buildUserTeam(Team team) {
-    /* TODO:
-    * Need to find a way to set the user permission for each team
-    */
     UserTeam userTeam = new UserTeam();
     userTeam.setId(team.getId());
     userTeam.setName(team.getName());

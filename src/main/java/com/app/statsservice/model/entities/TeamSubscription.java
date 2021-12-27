@@ -1,6 +1,5 @@
 package com.app.statsservice.model.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,4 +25,10 @@ public class TeamSubscription {
 
   @Column
   private Long roleId;
+
+  public TeamSubscription(Long userId, Long teamId, Long roleId) {
+    this.userId = userId;
+    this.teamId = teamId;
+    this.roleId = roleId;
+  }
 }
