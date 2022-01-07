@@ -18,5 +18,5 @@ public class DocumentType {
   private Long id;
 
   @Column
-  private String number;
+  private String name;
 }
