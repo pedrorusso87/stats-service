@@ -7,7 +7,7 @@ import com.app.statsservice.model.entities.Team;
 import com.app.statsservice.model.request.PlayerInformation;
 import com.app.statsservice.model.response.PlayerResponse;
 import com.app.statsservice.model.response.PlayersByTeamResponse;
-import com.app.statsservice.repository.DocumentTypeRespository;
+import com.app.statsservice.repository.DocumentTypeRepository;
 import com.app.statsservice.repository.PlayersRepository;
 import com.app.statsservice.repository.TeamsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +28,16 @@ public class PlayersService {
   private TeamsRepository teamsRepository;
 
   @Autowired
-  private DocumentTypeRespository documentTypeRespository;
+  private DocumentTypeRepository documentTypeRepository;
 
   private final DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
   public PlayersService(PlayersRepository playersRepository,
                         TeamsRepository teamsRepository,
-                        DocumentTypeRespository documentTypeRespository) {
+                        DocumentTypeRepository documentTypeRepository) {
     this.playersRepository = playersRepository;
     this.teamsRepository = teamsRepository;
-    this.documentTypeRespository = documentTypeRespository;
+    this.documentTypeRepository = documentTypeRepository;
   }
 
   public PlayersByTeamResponse findPlayersByTeam(Long teamId) {
@@ -80,7 +80,7 @@ public class PlayersService {
 
   private DocumentType getDocumentTypeById(Long documentTypeId) {
     //TODO: Add null check here
-    return documentTypeRespository.findById(documentTypeId).get();
+    return documentTypeRepository.findById(documentTypeId).get();
   }
 
   private Player buildPlayer(PlayerInformation playerInformation, Team playerTeam, DocumentType documentType) {
