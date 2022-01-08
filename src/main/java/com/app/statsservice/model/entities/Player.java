@@ -1,5 +1,6 @@
 package com.app.statsservice.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ public class Player {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @JsonIgnore
   private Long id;
 
   @Column
@@ -32,9 +34,11 @@ public class Player {
 
   @ManyToOne()
   @JoinColumn(name="document_type_id")
+  @JsonIgnore
   private DocumentType documentType;
 
   @ManyToOne()
   @JoinColumn(name="team_id")
+  @JsonIgnore
   private Team team;
 }

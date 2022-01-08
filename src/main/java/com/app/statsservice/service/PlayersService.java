@@ -59,6 +59,8 @@ public class PlayersService {
       DocumentType documentType = this.getDocumentTypeById(playerInformation.getDocumentTypeId());
       playersToSave.add(this.buildPlayer(playerInformation, playerTeam, documentType));
     }
+
+    //TODO: Should we create a response object?
     return playersRepository.saveAll(playersToSave);
   }
 

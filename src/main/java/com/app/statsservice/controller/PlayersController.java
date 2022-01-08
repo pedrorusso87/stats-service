@@ -22,6 +22,6 @@ public class PlayersController {
 
   @PostMapping("/add")
   public ResponseEntity<Object> addPlayersToTeam(@RequestBody AddPlayerRequest addPlayerRequest) {
-    return new ResponseEntity<>(playersService.addPlayersToTeam(addPlayerRequest), HttpStatus.OK);
+    return new ResponseEntity<>(playersService.addPlayersToTeam(addPlayerRequest), HttpStatus.CREATED);
   }
 }
